@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+/* Brand colors and font, usable as classes like bg-beige, text-ink */
+@theme {
+  --color-ink: #111111;
+  --color-beige: #f3eee6;
+  --color-sand: #e4dccf;
+  --color-stone: #6b6b6b;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: #ffffff;
+  color: var(--color-ink);
+}
