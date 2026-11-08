@@ -22,11 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-# Environment variables
-.env
-.env.*
-!.env.example
-
-# Dependencies and build files
-node_modules/
-dist/

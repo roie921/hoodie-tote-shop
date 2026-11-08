@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom'
 import ProductMockup from '../components/ProductMockup'
 import { useCart } from '../context/CartContext'
