@@ -6,7 +6,7 @@ import ProductMockup from '../components/ProductMockup'
 import ProductOptions from '../components/ProductOptions'
 import { useCart } from '../context/CartContext'
 import { useDesigns } from '../context/DesignContext'
-import { getProductById } from '../data/products'
+import { useProducts } from '../context/ProductContext'
 import useProductOptions, { buildOptionsQuery } from '../hooks/useProductOptions'
 import { CANVAS_HEIGHT, CANVAS_WIDTH, getMockupImage, getPrintArea } from '../utils/mockups'
 import { primaryButton, secondaryButton } from '../utils/styles'
@@ -56,7 +56,11 @@ function exportSide(canvas, multiplier) {
 // Finds the product from the URL, then shows the editor.
 function DesignEditor() {
   const { productId } = useParams()
+  const { getProductById, loading, error } = useProducts()
   const product = getProductById(productId)
+
+  if (loading) return <main className="mx-auto max-w-7xl px-6 py-24">Бүтээгдэхүүн ачаалж байна...</main>
+  if (error) return <main className="mx-auto max-w-7xl px-6 py-24 text-red-700">Өгөгдөл татахад алдаа гарлаа: {error}</main>
 
   if (!product) {
     return (

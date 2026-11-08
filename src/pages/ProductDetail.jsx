@@ -5,7 +5,8 @@ import ProductMockup from '../components/ProductMockup'
 import ProductOptions from '../components/ProductOptions'
 import { useCart } from '../context/CartContext'
 import { useDesigns } from '../context/DesignContext'
-import { getCategoryName, getProductById } from '../data/products'
+import { getCategoryName } from '../data/products'
+import { useProducts } from '../context/ProductContext'
 import useProductOptions, { buildOptionsQuery } from '../hooks/useProductOptions'
 import { formatPrice } from '../utils/format'
 import { primaryButton, secondaryButton } from '../utils/styles'
@@ -18,7 +19,11 @@ const SIDES = [
 // Finds the product from the URL, then shows the page content.
 function ProductDetail() {
   const { productId } = useParams()
+  const { getProductById, loading, error } = useProducts()
   const product = getProductById(productId)
+
+  if (loading) return <main className="mx-auto max-w-7xl px-6 py-24">Бүтээгдэхүүн ачаалж байна...</main>
+  if (error) return <main className="mx-auto max-w-7xl px-6 py-24 text-red-700">Өгөгдөл татахад алдаа гарлаа: {error}</main>
 
   if (!product) {
     return (

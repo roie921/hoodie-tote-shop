@@ -6,4 +6,4 @@ const siteInfo = {
   address: 'Улаанбаатар хот, Сүхбаатар дүүрэг, 1-р хороо',
 }
 
-export default siteInfoү
+export default siteInfo

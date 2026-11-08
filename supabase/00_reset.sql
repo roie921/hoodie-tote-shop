@@ -1,11 +1,3 @@
--- =====================================================================
--- 00_reset.sql  (DEVELOPMENT ONLY - DELETES ALL APPLICATION DATA)
--- Removes every table and function created by these scripts, including the
--- tables from the earlier version of this project. Run it only if you
--- already ran an older 01_schema.sql. Do not run it on real customer data.
--- It does not touch Supabase Auth users.
--- =====================================================================
-
 drop trigger if exists on_auth_user_created on auth.users;
 
 drop table if exists
