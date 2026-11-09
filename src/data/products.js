@@ -1,5 +1,3 @@
-// Local sample data. This will be replaced by Supabase later.
-
 export const HOODIE_SIZES = ['S', 'M', 'L', 'XL', 'XXL']
 
 export const CATEGORIES = [

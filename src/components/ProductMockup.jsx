@@ -1,6 +1,5 @@
 import { getMockupImage } from '../utils/mockups'
 
-// Shows a product mockup, with an optional custom design on top of it.
 function ProductMockup({ category, colorHex, side = 'front', overlay = null, alt }) {
   return (
     <div className="relative aspect-[6/7] w-full">

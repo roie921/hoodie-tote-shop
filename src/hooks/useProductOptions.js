@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { HOODIE_SIZES } from '../data/products'
 
-// Keeps the selected color, size and quantity for one product.
-// "initial" can contain values from the URL, they are validated here.
 export default function useProductOptions(product, initial = {}) {
   const isHoodie = product.category === 'hoodie'
 
@@ -34,7 +32,6 @@ export default function useProductOptions(product, initial = {}) {
   }
 }
 
-// Builds a URL query string so the editor opens with the same options.
 export function buildOptionsQuery(options) {
   const params = new URLSearchParams({
     color: options.colorId,

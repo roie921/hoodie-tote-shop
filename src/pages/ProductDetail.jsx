@@ -16,7 +16,6 @@ const SIDES = [
   { id: 'back', label: 'Ар тал' },
 ]
 
-// Finds the product from the URL, then shows the page content.
 function ProductDetail() {
   const { productId } = useParams()
   const { getProductById, loading, error } = useProducts()
@@ -44,7 +43,6 @@ function ProductDetailContent({ product }) {
   const { addItem } = useCart()
   const { designs } = useDesigns()
   const [searchParams] = useSearchParams()
-  // Options can come from the URL when returning from the editor.
   const options = useProductOptions(product, {
     colorId: searchParams.get('color'),
     size: searchParams.get('size'),

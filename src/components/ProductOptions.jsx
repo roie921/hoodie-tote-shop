@@ -1,7 +1,5 @@
 import { HOODIE_SIZES } from '../data/products'
 
-// Color, size (hoodies only) and quantity selectors.
-// "options" is the object returned by useProductOptions.
 function ProductOptions({ product, options }) {
   const { colorId, setColorId, color, size, setSize, quantity, setQuantity } = options
 

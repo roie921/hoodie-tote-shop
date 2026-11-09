@@ -269,7 +269,6 @@ function DesignEditorContent({ product }) {
     reader.readAsDataURL(file)
   }
 
-  // ---------- Resize, rotate, delete ----------
 
   const handleScaleChange = (event) => {
     const canvas = getActiveCanvas()

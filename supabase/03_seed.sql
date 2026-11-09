@@ -1,9 +1,3 @@
--- =====================================================================
--- 03_seed.sql
--- The four sample products from src/data/products.js.
--- Run this file THIRD. It is safe to run more than once.
--- =====================================================================
-
 insert into public.categories (slug, name) values
   ('hoodie', 'Худи'),
   ('tote',   'Даавуун цүнх')
@@ -28,7 +22,7 @@ from (values
 join public.categories c on c.slug = v.category_slug
 on conflict (slug) do nothing;
 
--- Hoodie variants: 4 colors x 5 sizes, 50 pieces each (demo stock).
+
 insert into public.product_variants
   (product_id, color_key, color_name, color_hex, size, stock_quantity, sort_order)
 select p.id, c.color_key, c.color_name, c.color_hex, s.size, 50, c.sort_order
@@ -43,7 +37,7 @@ cross join (values ('S'), ('M'), ('L'), ('XL'), ('XXL')) as s(size)
 where p.slug in ('classic-hoodie', 'oversize-hoodie')
 on conflict do nothing;
 
--- Tote bag variants: 3 colors, no size, 100 pieces each (demo stock).
+
 insert into public.product_variants
   (product_id, color_key, color_name, color_hex, size, stock_quantity, sort_order)
 select p.id, c.color_key, c.color_name, c.color_hex, null, 100, c.sort_order

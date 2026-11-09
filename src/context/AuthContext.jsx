@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
     }
     supabase.auth.getSession().then(({ data }) => loadProfile(data.session)).catch(() => setLoading(false))
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      // Avoid awaiting a database request inside the auth event callback.
+
       setTimeout(() => { if (active) loadProfile(newSession) }, 0)
     })
     return () => { active = false; subscription.unsubscribe() }

@@ -7,8 +7,6 @@ let nextItemId = 1
 export function CartProvider({ children }) {
   const [items, setItems] = useState([])
 
-  // Adds one product line to the cart.
-  // "options" comes from useProductOptions, "designImages" is optional.
   const addItem = (product, options, designImages = null) => {
     const id = nextItemId++
     const newItem = {

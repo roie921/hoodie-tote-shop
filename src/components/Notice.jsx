@@ -1,5 +1,3 @@
-// Small message box for success and error messages.
-// notice = { type: 'success' | 'error', text: '...' } or null
 function Notice({ notice }) {
   if (!notice) return null
 

@@ -1,10 +1,6 @@
-// Generates simple product mockup images (SVG) in any color.
-// These are placeholders until real product photos are added.
-
 export const CANVAS_WIDTH = 600
 export const CANVAS_HEIGHT = 700
 
-// The area where a design can be placed (in canvas pixels).
 const PRINT_AREAS = {
   hoodie: {
     front: { x: 215, y: 265, width: 170, height: 180 },
@@ -20,7 +16,6 @@ export function getPrintArea(category, side) {
   return PRINT_AREAS[category][side]
 }
 
-// Makes a hex color darker (negative amount) or lighter (positive amount).
 function shade(hex, amount) {
   const number = parseInt(hex.slice(1), 16)
   const clamp = (value) => Math.max(0, Math.min(255, value))
@@ -65,7 +60,6 @@ function toteSvg(color) {
 </svg>`
 }
 
-// Returns an image URL that can be used in an <img> tag.
 export function getMockupImage(category, side, colorHex) {
   const svg = category === 'hoodie' ? hoodieSvg(side, colorHex) : toteSvg(colorHex)
   return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`

@@ -168,8 +168,6 @@ create trigger custom_designs_touch_updated_at
   before update on public.custom_designs
   for each row execute function public.touch_updated_at();
 
--- A new order always starts as pending with total 0.
--- Whatever the browser sends for these two columns is ignored.
 create or replace function public.reset_new_order()
 returns trigger
 language plpgsql
@@ -185,8 +183,6 @@ create trigger orders_reset_new_order
   before insert on public.orders
   for each row execute function public.reset_new_order();
 
--- Fill an order item from the chosen variant and take the items out of stock.
--- A customer cannot send a fake price, name or color from the browser.
 create or replace function public.set_order_item_details()
 returns trigger
 language plpgsql
@@ -233,7 +229,6 @@ create trigger order_items_set_details
   before insert on public.order_items
   for each row execute function public.set_order_item_details();
 
--- Recalculate the order total after an item is added.
 create or replace function public.recalculate_order_total()
 returns trigger
 language plpgsql

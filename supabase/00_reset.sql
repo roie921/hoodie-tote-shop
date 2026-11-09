@@ -12,7 +12,6 @@ drop table if exists
   public.profiles
 cascade;
 
--- Storage policies from 04_storage.sql (the bucket and its files are kept).
 drop policy if exists "custom_designs_files_select_own"   on storage.objects;
 drop policy if exists "custom_designs_files_insert_own"   on storage.objects;
 drop policy if exists "custom_designs_files_update_own"   on storage.objects;

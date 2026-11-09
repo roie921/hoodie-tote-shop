@@ -1,7 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
 
-// These values come from the ".env.local" file (see ".env.example").
-// The publishable key is public by design: Row Level Security protects the data.
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 

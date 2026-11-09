@@ -1,11 +1,3 @@
--- =====================================================================
--- tests/rls_tests.sql
--- Automatic Row Level Security test. Run it in the Supabase SQL Editor
--- AFTER 01..04 have been run. It creates temporary test users and test
--- products, pretends to be a guest, two customers and an admin, then
--- removes its own test data. Your real data is not touched.
--- The result table at the bottom must show PASS on every row.
--- =====================================================================
 
 drop table if exists pg_temp.rls_results;
 create temp table rls_results (
@@ -17,8 +9,7 @@ create temp table rls_results (
 grant all on rls_results to public;
 grant usage on sequence rls_results_n_seq to public;
 
--- Runs one statement and reports 'allowed' or 'blocked'.
--- A statement counts as blocked when it fails or changes 0 rows.
+
 create or replace function pg_temp.attempt(statement text)
 returns text
 language plpgsql
@@ -40,7 +31,6 @@ grant execute on function pg_temp.attempt(text) to public;
 
 begin;
 
--- ---------- Setup (as the database owner) ----------
 delete from public.orders
   where user_id in (select id from auth.users where email like 'rls-test-%@example.test');
 delete from public.custom_designs
@@ -80,7 +70,6 @@ insert into public.custom_designs (id, user_id, product_id, design_json) values
   ('b0b0b0b0-0000-4000-8000-0000000000b2', 'b2222222-2222-4222-8222-222222222222',
    'd4444444-4444-4444-8444-444444444444', '{"front":{}}');
 
--- ---------- Guest (not logged in) ----------
 select set_config('request.jwt.claims', '{"role":"anon"}', true);
 set local role anon;
 
@@ -100,7 +89,7 @@ insert into rls_results values (default, 'Guest cannot read profiles', 'blocked'
 insert into rls_results values (default, 'Guest cannot read orders', 'blocked', pg_temp.attempt('select * from public.orders'));
 insert into rls_results values (default, 'Guest cannot read custom designs', 'blocked', pg_temp.attempt('select * from public.custom_designs'));
 
--- ---------- Customer A ----------
+
 reset role;
 select set_config('request.jwt.claims', '{"sub":"a1111111-1111-4111-8111-111111111111","role":"authenticated"}', true);
 set local role authenticated;
@@ -125,7 +114,7 @@ insert into rls_results values (default, 'Customer A cannot change stock', 'bloc
 insert into rls_results values (default, 'Customer A cannot insert a category', 'blocked', pg_temp.attempt(
   $q$insert into public.categories (slug, name) values ('rls-test-a', 'x')$q$));
 
--- order with a fake status and total
+
 insert into rls_results values (default, 'Customer A can create an own order', 'allowed', pg_temp.attempt(
   $q$insert into public.orders (id, user_id, status, total_price, recipient_name, phone, address)
      values ('a0a0a0a0-0000-4000-8000-000000000001', 'a1111111-1111-4111-8111-111111111111',
@@ -137,7 +126,6 @@ insert into rls_results values (default, 'Customer A cannot create an order for 
   $q$insert into public.orders (user_id, recipient_name, phone, address)
      values ('b2222222-2222-4222-8222-222222222222', 'x', '1', 'x')$q$));
 
--- order item with a fake price and name
 insert into rls_results values (default, 'Customer A can add an order item', 'allowed', pg_temp.attempt(
   $q$insert into public.order_items (order_id, variant_id, quantity, product_name, unit_price)
      values ('a0a0a0a0-0000-4000-8000-000000000001', 'e5555555-5555-4555-8555-555555555555', 2, 'FAKE', 1)$q$));
@@ -159,7 +147,6 @@ insert into rls_results values (default, 'Ordering an inactive variant is blocke
 insert into rls_results values (default, 'Customer A cannot change the own order status', 'blocked', pg_temp.attempt(
   $q$update public.orders set status = 'completed' where id = 'a0a0a0a0-0000-4000-8000-000000000001'$q$));
 
--- custom designs
 insert into rls_results values (default, 'Customer A can save an own design', 'allowed', pg_temp.attempt(
   $q$insert into public.custom_designs (id, user_id, product_id, design_json)
      values ('a0a0a0a0-0000-4000-8000-0000000000d1', 'a1111111-1111-4111-8111-111111111111',
@@ -181,7 +168,7 @@ insert into rls_results values (default, 'An ordered design is locked (update)',
 insert into rls_results values (default, 'An ordered design is locked (delete)', 'blocked', pg_temp.attempt(
   $q$delete from public.custom_designs where id = 'a0a0a0a0-0000-4000-8000-0000000000d1'$q$));
 
--- storage
+
 insert into rls_results values (default, 'Customer A can upload into the own folder', 'allowed', pg_temp.attempt(
   $q$insert into storage.objects (bucket_id, name)
      values ('custom-designs', 'a1111111-1111-4111-8111-111111111111/test-front.png')$q$));
@@ -189,7 +176,7 @@ insert into rls_results values (default, 'Customer A cannot upload into the fold
   $q$insert into storage.objects (bucket_id, name)
      values ('custom-designs', 'b2222222-2222-4222-8222-222222222222/test-front.png')$q$));
 
--- ---------- Customer B ----------
+
 reset role;
 select set_config('request.jwt.claims', '{"sub":"b2222222-2222-4222-8222-222222222222","role":"authenticated"}', true);
 set local role authenticated;
@@ -209,7 +196,7 @@ insert into rls_results (test, expected, actual)
 select 'Customer B cannot see the files of A', '0', count(*)::text
 from storage.objects where bucket_id = 'custom-designs' and name like 'a1111111-%';
 
--- ---------- Admin ----------
+
 reset role;
 select set_config('request.jwt.claims', '{"sub":"c3333333-3333-4333-8333-333333333333","role":"authenticated"}', true);
 set local role authenticated;
