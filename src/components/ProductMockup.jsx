@@ -2,7 +2,7 @@ import { getMockupImage } from '../utils/mockups'
 
 function ProductMockup({ category, colorHex, side = 'front', overlay = null, alt }) {
   return (
-    <div className="relative aspect-[6/7] w-full">
+    <div className="relative aspect-6/7 w-full">
       <img
         src={getMockupImage(category, side, colorHex)}
         alt={alt}
